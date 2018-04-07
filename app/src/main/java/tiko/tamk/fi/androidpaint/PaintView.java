@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class PaintView extends View {
 
     public static int BRUSH_SIZE = 20;
-    public static final int DEFAULT_COLOR = Color.RED;
+    public static final int DEFAULT_COLOR = Color.BLACK;
     public static final int DEFAULT_BG_COLOR = Color.WHITE;
     private static final float TOUCH_TOLERANCE = 4;
     private float mX, mY;
@@ -38,8 +38,8 @@ public class PaintView extends View {
         this(context, null);
     }
 
-    public PaintView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public PaintView(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
@@ -81,6 +81,7 @@ public class PaintView extends View {
     }
 
     public void clear() {
+        currentColor = DEFAULT_COLOR;
         backgroundColor = DEFAULT_BG_COLOR;
         paths.clear();
         normal();
@@ -157,5 +158,22 @@ public class PaintView extends View {
         }
 
         return true;
+    }
+
+    public int getCurrentColor() {
+        return currentColor;
+    }
+
+    public void setCurrentColor(int currentColor) {
+        this.currentColor = currentColor;
+    }
+
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    @Override
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 }
