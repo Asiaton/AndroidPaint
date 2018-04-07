@@ -11,9 +11,12 @@
     <item android:title="Blur"
         android:id="@+id/blur"/>
 
-    <item android:title="Clear"
-        android:id="@+id/clear"/>
+    <item android:title="Eraser"
+        android:id="@+id/eraser"/>
 
     <item android:title="Color"
         android:id="@+id/color"/>
+
+    <item android:title="Clear"
+        android:id="@+id/clear"/>
 </menu>
