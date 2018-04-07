@@ -13,4 +13,7 @@
 
     <item android:title="Clear"
         android:id="@+id/clear"/>
+
+    <item android:title="Color"
+        android:id="@+id/color"/>
 </menu>
