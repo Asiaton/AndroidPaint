@@ -17,6 +17,12 @@
     <item android:title="Color"
         android:id="@+id/color"/>
 
+    <item android:title="Background color"
+        android:id="@+id/backgroundColor" />
+
+    <item android:title="Transparent background"
+        android:id="@+id/transparentBG" />
+
     <item android:title="Clear"
         android:id="@+id/clear"/>
 
