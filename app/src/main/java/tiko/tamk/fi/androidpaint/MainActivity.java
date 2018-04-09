@@ -89,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.clear:
                 paintView.clear();
                 return true;
+            case R.id.undo:
+                paintView.undo();
+                return true;
             case R.id.save:
                 save(paintView);
                 return true;

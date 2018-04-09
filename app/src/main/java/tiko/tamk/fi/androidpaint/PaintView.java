@@ -88,22 +88,27 @@ public class PaintView extends View {
         invalidate();
     }
 
+    public void undo() {
+        paths.remove(paths.size()-1);
+        invalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.save();
         mCanvas.drawColor(backgroundColor);
 
-        for (DrawPath fp : paths) {
-            mPaint.setColor(fp.getColor());
-            mPaint.setStrokeWidth(fp.getStrokeWidth());
+        for (DrawPath dp : paths) {
+            mPaint.setColor(dp.getColor());
+            mPaint.setStrokeWidth(dp.getStrokeWidth());
             mPaint.setMaskFilter(null);
 
-            if (fp.getEmboss())
+            if (dp.getEmboss())
                 mPaint.setMaskFilter(mEmboss);
-            else if (fp.getBlur())
+            else if (dp.getBlur())
                 mPaint.setMaskFilter(mBlur);
 
-            mCanvas.drawPath(fp.getPath(), mPaint);
+            mCanvas.drawPath(dp.getPath(), mPaint);
 
         }
 

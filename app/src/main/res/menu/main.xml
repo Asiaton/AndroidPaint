@@ -20,6 +20,12 @@
     <item android:title="Clear"
         android:id="@+id/clear"/>
 
+    <item android:title="Undo"
+        android:id="@+id/undo" />
+
+    <item android:title="Dropper"
+        android:id="@+id/dropper" />
+
     <item android:title="Save"
         android:id="@+id/save"/>
 
