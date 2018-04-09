@@ -6,6 +6,7 @@ package tiko.tamk.fi.androidpaint;
 
 import android.content.Context;
 import android.graphics.*;
+import android.graphics.drawable.PictureDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -17,7 +18,7 @@ public class PaintView extends View {
 
     public static int BRUSH_SIZE = 20;
     public static final int DEFAULT_COLOR = Color.BLACK;
-    public static final int DEFAULT_BG_COLOR = Color.WHITE;
+    public static final int DEFAULT_BG_COLOR = Color.TRANSPARENT;
     private static final float TOUCH_TOLERANCE = 4;
     private float mX, mY;
     private Path mPath;
@@ -31,6 +32,7 @@ public class PaintView extends View {
     private MaskFilter mEmboss;
     private MaskFilter mBlur;
     private Bitmap mBitmap;
+    private Bitmap loadedBitmap;
     private Canvas mCanvas;
     private Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
 
@@ -59,6 +61,7 @@ public class PaintView extends View {
         int width = metrics.widthPixels;
 
         mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        loadedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mBitmap);
 
         currentColor = DEFAULT_COLOR;
@@ -111,7 +114,7 @@ public class PaintView extends View {
             mCanvas.drawPath(dp.getPath(), mPaint);
 
         }
-
+        canvas.drawBitmap(loadedBitmap, 0, 0, mBitmapPaint);
         canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
         canvas.restore();
     }
@@ -165,6 +168,24 @@ public class PaintView extends View {
         return true;
     }
 
+    private Bitmap pictureDrawableToBitmap(Picture picture) {
+        PictureDrawable pd = new PictureDrawable(picture);
+        Bitmap bitmap = Bitmap.createBitmap(pd.getIntrinsicWidth(), pd.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawPicture(pd.getPicture());
+        return bitmap;
+    }
+
+    private Bitmap overlay(Bitmap bmp1, Bitmap bmp2) {
+        Bitmap bmOverlay = Bitmap.createBitmap(mBitmap.getWidth(),
+                                                mBitmap.getHeight(),
+                                                mBitmap.getConfig());
+        Canvas canvas = new Canvas(bmOverlay);
+        canvas.drawBitmap(bmp1, new Matrix(), null);
+        canvas.drawBitmap(bmp2, new Matrix(), null);
+        return bmOverlay;
+    }
+
     public int getCurrentColor() {
         return currentColor;
     }
@@ -177,9 +198,9 @@ public class PaintView extends View {
         return backgroundColor;
     }
 
-    @Override
     public void setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
+        invalidate();
     }
 
     public Bitmap getmBitmap() {
@@ -196,5 +217,13 @@ public class PaintView extends View {
 
     public void setmCanvas(Canvas mCanvas) {
         this.mCanvas = mCanvas;
+    }
+
+    public Bitmap getLoadedBitmap() {
+        return loadedBitmap;
+    }
+
+    public void setLoadedBitmap(Bitmap loadedBitmap) {
+        this.loadedBitmap = loadedBitmap;
     }
 }
