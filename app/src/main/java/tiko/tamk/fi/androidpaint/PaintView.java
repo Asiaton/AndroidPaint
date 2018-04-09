@@ -36,6 +36,9 @@ public class PaintView extends View {
     private Canvas mCanvas;
     private Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
 
+    private int bitmapWidth;
+    private int bitmapHeight;
+
     public PaintView(Context context) {
         this(context, null);
     }
@@ -57,11 +60,11 @@ public class PaintView extends View {
     }
 
     public void init(DisplayMetrics metrics) {
-        int height = metrics.heightPixels;
-        int width = metrics.widthPixels;
+        bitmapHeight = metrics.heightPixels;
+        bitmapWidth = metrics.widthPixels;
 
-        mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        loadedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        mBitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        loadedBitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mBitmap);
 
         currentColor = DEFAULT_COLOR;
@@ -87,6 +90,9 @@ public class PaintView extends View {
         currentColor = DEFAULT_COLOR;
         backgroundColor = DEFAULT_BG_COLOR;
         paths.clear();
+        mBitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        loadedBitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        mCanvas = new Canvas(mBitmap);
         normal();
         invalidate();
     }
