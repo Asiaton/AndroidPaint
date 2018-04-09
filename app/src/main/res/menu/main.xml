@@ -22,4 +22,7 @@
 
     <item android:title="Save"
         android:id="@+id/save"/>
+
+    <item android:title="Load"
+        android:id="@+id/load" />
 </menu>
