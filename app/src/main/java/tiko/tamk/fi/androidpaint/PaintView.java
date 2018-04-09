@@ -176,4 +176,20 @@ public class PaintView extends View {
     public void setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
     }
+
+    public Bitmap getmBitmap() {
+        return mBitmap;
+    }
+
+    public void setmBitmap(Bitmap mBitmap) {
+        this.mBitmap = mBitmap;
+    }
+
+    public Canvas getmCanvas() {
+        return mCanvas;
+    }
+
+    public void setmCanvas(Canvas mCanvas) {
+        this.mCanvas = mCanvas;
+    }
 }
