@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -53,15 +54,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                          String permissions[],
-                                          int[] grantResults) {
-        if (grantResults.length > 0 &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
@@ -84,7 +76,13 @@ public class MainActivity extends AppCompatActivity {
                 paintView.setCurrentColor(paintView.getBackgroundColor());
                 return true;
             case R.id.color:
-                createColorPicker().show();
+                createColorPicker(0).show();
+                return true;
+            case R.id.backgroundColor:
+                createColorPicker(1).show();
+                return true;
+            case R.id.transparentBG:
+                paintView.setBackgroundColor(Color.TRANSPARENT);
                 return true;
             case R.id.clear:
                 paintView.clear();
@@ -97,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.load:
                 paintView.clear();
-                //load();
+                load();
                 return true;
         }
 
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             Bitmap bitmap;
             try {
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                paintView.setmBitmap(bitmap);
+                paintView.setLoadedBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -188,14 +186,19 @@ public class MainActivity extends AppCompatActivity {
         return uniqueName;
     }
 
-    public AmbilWarnaDialog createColorPicker() {
+    public AmbilWarnaDialog createColorPicker(final int colorTarget) {
         AmbilWarnaDialog dialog = new AmbilWarnaDialog(this,
                 paintView.getCurrentColor(),
+                true,
                 new AmbilWarnaDialog.OnAmbilWarnaListener() {
                     @Override
                     public void onOk(AmbilWarnaDialog dialog, int color) {
                         // color is the color selected by the user.
-                        paintView.setCurrentColor(color);
+                        if (colorTarget == 0) {
+                            paintView.setCurrentColor(color);
+                        } else if (colorTarget == 1) {
+                            paintView.setBackgroundColor(color);
+                        }
                     }
 
                     @Override
