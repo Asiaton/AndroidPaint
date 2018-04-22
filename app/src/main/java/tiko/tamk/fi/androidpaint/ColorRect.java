@@ -1,36 +1,33 @@
 package tiko.tamk.fi.androidpaint;
 
-import android.graphics.Paint;
+import android.graphics.Color;
 import android.graphics.RectF;
 
 /**
  * Created by TomB on 22.4.2018.
  */
 
-public class PaintRect {
+public class ColorRect {
 
     private RectF rectangle;
-    private Paint paint;
+    private int color;
+    private int strokeWidth;
 
-    public PaintRect(RectF rectangle, Paint paint) {
+    public ColorRect(RectF rectangle, int color, int strokeWidth) {
         this.rectangle = rectangle;
-        this.paint = paint;
+        this.color = color;
+        this.strokeWidth = strokeWidth;
     }
 
     public RectF getRectangle() {
-
         return rectangle;
     }
 
-    public void setRectangle(RectF rectangle) {
-        this.rectangle = rectangle;
+    public int getColor() {
+        return color;
     }
 
-    public Paint getPaint() {
-        return paint;
-    }
-
-    public void setPaint(Paint paint) {
-        this.paint = paint;
+    public int getStrokeWidth() {
+        return strokeWidth;
     }
 }
