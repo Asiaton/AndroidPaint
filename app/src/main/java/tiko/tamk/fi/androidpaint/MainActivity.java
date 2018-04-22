@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             Bitmap bitmap;
             try {
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                paintView.setLoadedBitmap(bitmap);
+                paintView.loadBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
