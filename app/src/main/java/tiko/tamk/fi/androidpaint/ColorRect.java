@@ -7,27 +7,17 @@ import android.graphics.RectF;
  * Created by TomB on 22.4.2018.
  */
 
-public class ColorRect {
+public class ColorRect extends ColorShape {
 
     private RectF rectangle;
-    private int color;
-    private int strokeWidth;
 
-    public ColorRect(RectF rectangle, int color, int strokeWidth) {
+    public ColorRect(int color, int strokeWidth, RectF rectangle) {
+        super(color, strokeWidth);
         this.rectangle = rectangle;
-        this.color = color;
-        this.strokeWidth = strokeWidth;
     }
 
     public RectF getRectangle() {
         return rectangle;
     }
 
-    public int getColor() {
-        return color;
-    }
-
-    public int getStrokeWidth() {
-        return strokeWidth;
-    }
 }
