@@ -30,6 +30,7 @@ public class PaintView extends View {
     private boolean blur;
     private boolean dropperActive = false;
     private boolean drawRectangle = false;
+    private boolean drawCircle = false;
 
     private MaskFilter mEmboss;
     private MaskFilter mBlur;
@@ -175,31 +176,7 @@ public class PaintView extends View {
             currentColor = mBitmap.getPixel((int) x, (int) y);
             dropperActive = false;
         } else if (drawRectangle) {
-            switch(event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    beginCoordinate.x = x;
-                    beginCoordinate.y = y;
-                    endCoordinate.x = x;
-                    endCoordinate.y = y;
-                    invalidate();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    endCoordinate.x = x;
-                    endCoordinate.y = y;
-                    invalidate();
-                    break;
-                case MotionEvent.ACTION_UP:
-                    rectangles.add(new ColorRect(
-                            new RectF(beginCoordinate.x,
-                                    beginCoordinate.y,
-                                    endCoordinate.x,
-                                    endCoordinate.y),
-                                    currentColor,
-                                    strokeWidth));
-                    drawRectangle = false;
-                    invalidate();
-                    break;
-            }
+            rectangleDraw(event);
         } else {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -218,6 +195,72 @@ public class PaintView extends View {
         }
 
         return true;
+    }
+
+    public void rectangleDraw(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+
+        switch(event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                beginCoordinate.x = x;
+                beginCoordinate.y = y;
+                endCoordinate.x = x;
+                endCoordinate.y = y;
+                invalidate();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                endCoordinate.x = x;
+                endCoordinate.y = y;
+                invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                rectangles.add(new ColorRect(
+                        currentColor,
+                        strokeWidth,
+                        new RectF(
+                                beginCoordinate.x,
+                                beginCoordinate.y,
+                                endCoordinate.x,
+                                endCoordinate.y)));
+                drawRectangle = false;
+                invalidate();
+                break;
+        }
+    }
+
+    public void circleDraw(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+
+        switch(event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                beginCoordinate.x = x;
+                beginCoordinate.y = y;
+                endCoordinate.x = x;
+                endCoordinate.y = y;
+                invalidate();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                endCoordinate.x = x;
+                endCoordinate.y = y;
+                invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                float dx = beginCoordinate.x - endCoordinate.x;
+                float dy = beginCoordinate.y - endCoordinate.y;
+                float radius = (float) Math.sqrt((dx * dx) + (dy * dy));
+                circles.add(new ColorCircle(
+                        currentColor,
+                        strokeWidth,
+                        new PointF(
+                                beginCoordinate.x,
+                                beginCoordinate.y),
+                        radius));
+                drawCircle = false;
+                invalidate();
+                break;
+        }
     }
 
     public void loadBitmap(Bitmap bmp) {
