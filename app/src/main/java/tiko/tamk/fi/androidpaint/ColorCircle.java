@@ -8,28 +8,26 @@ import android.graphics.PointF;
 
 public class ColorCircle extends ColorShape {
 
-    private PointF pointF;
+    private float x;
+    private float y;
     private float radius;
 
-    public ColorCircle(int color, int strokeWidth, PointF pointF, float radius) {
+    public ColorCircle(int color, int strokeWidth, float x, float y, float radius) {
         super(color, strokeWidth);
-        this.pointF = pointF;
+        this.x = x;
+        this.y = y;
         this.radius = radius;
     }
 
-    public PointF getPointF() {
-        return pointF;
+    public float getX() {
+        return x;
     }
 
-    public void setPointF(PointF pointF) {
-        this.pointF = pointF;
+    public float getY() {
+        return y;
     }
 
     public float getRadius() {
         return radius;
-    }
-
-    public void setRadius(float radius) {
-        this.radius = radius;
     }
 }
