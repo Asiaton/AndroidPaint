@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.eraser:
                 paintView.setCurrentColor(paintView.getBackgroundColor());
+                paintView.normal();
                 return true;
             case R.id.color:
                 createColorPicker(0).show();
@@ -81,14 +82,17 @@ public class MainActivity extends AppCompatActivity {
             case R.id.backgroundColor:
                 createColorPicker(1).show();
                 return true;
-            case R.id.transparentBG:
-                paintView.setBackgroundColor(Color.TRANSPARENT);
-                return true;
             case R.id.clear:
                 paintView.clear();
                 return true;
             case R.id.undo:
                 paintView.undo();
+                return true;
+            case R.id.rectangle:
+                paintView.setDrawRectangle(true);
+                return true;
+            case R.id.dropper:
+                paintView.setDropperActive(true);
                 return true;
             case R.id.save:
                 save(paintView);
@@ -141,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
             File dir = new File(fullPath);
             System.out.println(dir.exists());
             if (!dir.exists()) {
-                // TODO find out how to find phone gallery path and add here
                 System.out.println(dir.mkdirs());
             }
 
