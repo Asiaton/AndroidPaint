@@ -5,4 +5,5 @@ package tiko.tamk.fi.androidpaint;
  */
 
 public class ColorCircle {
+
 }

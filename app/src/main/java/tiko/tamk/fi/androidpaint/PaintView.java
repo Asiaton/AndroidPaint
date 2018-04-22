@@ -6,10 +6,8 @@ package tiko.tamk.fi.androidpaint;
 
 import android.content.Context;
 import android.graphics.*;
-import android.graphics.drawable.PictureDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -30,8 +28,18 @@ public class PaintView extends View {
     private int strokeWidth;
     private boolean emboss;
     private boolean blur;
+    private boolean dropperActive = false;
+    private boolean drawRectangle = false;
+
     private MaskFilter mEmboss;
     private MaskFilter mBlur;
+
+    private PointF beginCoordinate = new PointF();
+    private PointF endCoordinate = new PointF();
+
+    private ArrayList<ColorRect> rectangles = new ArrayList<>();
+    private ArrayList<ColorCircle> circles = new ArrayList<>();
+
     private Bitmap mBitmap;
     private Bitmap loadedBitmap;
     private Canvas mCanvas;
@@ -119,8 +127,14 @@ public class PaintView extends View {
                 mPaint.setMaskFilter(mBlur);
 
             mCanvas.drawPath(dp.getPath(), mPaint);
-
         }
+
+        for (ColorRect r : rectangles) {
+            mPaint.setColor(r.getColor());
+            mPaint.setStrokeWidth(r.getStrokeWidth());
+            mCanvas.drawRect(r.getRectangle(), mPaint);
+        }
+
         canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
         canvas.drawBitmap(loadedBitmap, 0, 0, mBitmapPaint);
         canvas.restore();
@@ -157,19 +171,50 @@ public class PaintView extends View {
         float x = event.getX();
         float y = event.getY();
 
-        switch(event.getAction()) {
-            case MotionEvent.ACTION_DOWN :
-                touchStart(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE :
-                touchMove(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP :
-                touchUp();
-                invalidate();
-                break;
+        if (dropperActive) {
+            currentColor = mBitmap.getPixel((int) x, (int) y);
+            dropperActive = false;
+        } else if (drawRectangle) {
+            switch(event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    beginCoordinate.x = x;
+                    beginCoordinate.y = y;
+                    endCoordinate.x = x;
+                    endCoordinate.y = y;
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    endCoordinate.x = x;
+                    endCoordinate.y = y;
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    rectangles.add(new ColorRect(
+                            new RectF(beginCoordinate.x,
+                                    beginCoordinate.y,
+                                    endCoordinate.x,
+                                    endCoordinate.y),
+                                    currentColor,
+                                    strokeWidth));
+                    drawRectangle = false;
+                    invalidate();
+                    break;
+            }
+        } else {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    touchStart(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    touchMove(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    touchUp();
+                    invalidate();
+                    break;
+            }
         }
 
         return true;
@@ -180,7 +225,6 @@ public class PaintView extends View {
         loadedBitmap = Bitmap.createScaledBitmap(bmp, bitmapWidth, bitmapHeight, false);
         mCanvas.setBitmap(loadedBitmap);
     }
-
 
     public int getCurrentColor() {
         return currentColor;
@@ -221,5 +265,21 @@ public class PaintView extends View {
 
     public void setLoadedBitmap(Bitmap bmp) {
         loadedBitmap = bmp;
+    }
+
+    public boolean getDropperActive() {
+        return dropperActive;
+    }
+
+    public void setDropperActive(boolean dropperActive) {
+        this.dropperActive = dropperActive;
+    }
+
+    public boolean getDrawRectangle() {
+        return drawRectangle;
+    }
+
+    public void setDrawRectangle(boolean drawRectangle) {
+        this.drawRectangle = drawRectangle;
     }
 }
