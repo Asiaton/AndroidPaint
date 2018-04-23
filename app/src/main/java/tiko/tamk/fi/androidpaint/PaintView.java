@@ -114,12 +114,16 @@ public class PaintView extends View {
     }
 
     public void undoLine() {
-        paths.remove(paths.size()-1);
+        if (paths.size() > 0) {
+            paths.remove(paths.size() - 1);
+        }
         invalidate();
     }
 
     public void undoShape() {
-        shapes.remove(shapes.size()-1);
+        if (shapes.size() > 0) {
+            shapes.remove(shapes.size() - 1);
+        }
         invalidate();
     }
 
