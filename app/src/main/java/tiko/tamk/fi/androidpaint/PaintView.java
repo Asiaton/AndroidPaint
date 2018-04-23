@@ -1,9 +1,5 @@
 package tiko.tamk.fi.androidpaint;
 
-/**
- * Created by TomB on 5.4.2018.
- */
-
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;

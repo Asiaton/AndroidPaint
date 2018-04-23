@@ -2,10 +2,6 @@ package tiko.tamk.fi.androidpaint;
 
 import android.graphics.RectF;
 
-/**
- * Created by TomB on 22.4.2018.
- */
-
 public class ColorRect extends ColorShape {
 
     private RectF rectangle;

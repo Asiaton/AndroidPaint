@@ -1,9 +1,5 @@
 package tiko.tamk.fi.androidpaint;
 
-/**
- * Created by TomB on 5.4.2018.
- */
-
 import android.graphics.Paint;
 import android.graphics.Path;
 
@@ -44,7 +40,7 @@ public class DrawPath {
     private Paint.Cap cap;
 
     /**
-     * Constructs the object and sets its attributes
+     * Constructs the object and sets its attributes.
      *
      * @param color The color in which the line was drawn.
      * @param emboss Whether the line had an emboss effect applied to it or not.
