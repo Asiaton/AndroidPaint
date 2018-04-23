@@ -2,7 +2,11 @@ package tiko.tamk.fi.androidpaint;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,13 +17,22 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -74,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.eraser:
                 paintView.setCurrentColor(paintView.getBackgroundColor());
+                paintView.normal();
                 return true;
             case R.id.color:
                 createColorPicker(0).show();
@@ -81,14 +95,38 @@ public class MainActivity extends AppCompatActivity {
             case R.id.backgroundColor:
                 createColorPicker(1).show();
                 return true;
-            case R.id.transparentBG:
-                paintView.setBackgroundColor(Color.TRANSPARENT);
-                return true;
             case R.id.clear:
                 paintView.clear();
                 return true;
-            case R.id.undo:
-                paintView.undo();
+            case R.id.undoLine:
+                paintView.undoLine();
+                return true;
+            case R.id.undoShape:
+                paintView.undoShape();
+                return true;
+            case R.id.line:
+                paintView.setDrawLine(true);
+                return true;
+            case R.id.rectangle:
+                paintView.setDrawRectangle(true);
+                return true;
+            case R.id.circle:
+                paintView.setDrawCircle(true);
+                return true;
+            case R.id.oval:
+                paintView.setDrawOval(true);
+                return true;
+            case R.id.roundRect:
+                paintView.setDrawRoundedRectangle(true);
+                return true;
+            case R.id.dropper:
+                paintView.setDropperActive(true);
+                return true;
+            case R.id.brushShape:
+                paintView.changeStrokeShape();
+                return true;
+            case R.id.brushSize:
+                createSeekDialog();
                 return true;
             case R.id.save:
                 save(paintView);
@@ -96,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.load:
                 paintView.clear();
                 load();
+                return true;
+            case R.id.credits:
+                openCredits();
                 return true;
         }
 
@@ -116,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             Bitmap bitmap;
             try {
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                paintView.setLoadedBitmap(bitmap);
+                paintView.loadBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -141,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
             File dir = new File(fullPath);
             System.out.println(dir.exists());
             if (!dir.exists()) {
-                // TODO find out how to find phone gallery path and add here
                 System.out.println(dir.mkdirs());
             }
 
@@ -186,6 +226,44 @@ public class MainActivity extends AppCompatActivity {
         return uniqueName;
     }
 
+    public void createSeekDialog() {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Choose brush size");
+
+        LinearLayout linear = new LinearLayout(this);
+        linear.setOrientation(LinearLayout.VERTICAL);
+
+        final SeekBar seek = new SeekBar(this);
+        linear.addView(seek);
+
+        alert.setView(linear);
+
+        alert.setPositiveButton("Ok",new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog,int id)
+            {
+                String brushWidth = String.valueOf(seek.getProgress());
+                Toast.makeText(getApplicationContext(),
+                        "Brush size: " + brushWidth,
+                        Toast.LENGTH_LONG).show();
+                paintView.setStrokeWidth(seek.getProgress());
+            }
+        });
+
+        alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog,int id)
+            {
+                Toast.makeText(getApplicationContext(),
+                        "Canceled",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        alert.show();
+    }
+
     public AmbilWarnaDialog createColorPicker(final int colorTarget) {
         AmbilWarnaDialog dialog = new AmbilWarnaDialog(this,
                 paintView.getCurrentColor(),
@@ -207,5 +285,24 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         return dialog;
+    }
+
+    public void openCredits() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Author: Tom Bäckman" +
+                "\n\nMenu icons made by Smashicons, monkik " +
+                "and Gregor Cresnar from www.flaticon.com." +
+                "\n\nAmbilWarnaDialog by yukuku was used for " +
+                "the color picker dialog.");
+
+        builder.setPositiveButton("Ok, cool!", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

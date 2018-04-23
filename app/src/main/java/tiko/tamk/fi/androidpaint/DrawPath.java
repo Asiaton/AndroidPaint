@@ -4,6 +4,7 @@ package tiko.tamk.fi.androidpaint;
  * Created by TomB on 5.4.2018.
  */
 
+import android.graphics.Paint;
 import android.graphics.Path;
 
 public class DrawPath {
@@ -13,13 +14,15 @@ public class DrawPath {
     private boolean blur;
     private int strokeWidth;
     private Path path;
+    private Paint.Cap cap;
 
-    public DrawPath(int color, boolean emboss, boolean blur, int strokeWidth, Path path) {
+    public DrawPath(int color, boolean emboss, boolean blur, int strokeWidth, Path path, Paint.Cap cap) {
         this.color = color;
         this.emboss = emboss;
         this.blur = blur;
         this.strokeWidth = strokeWidth;
         this.path = path;
+        this.cap = cap;
     }
 
     public int getColor() {
@@ -34,31 +37,19 @@ public class DrawPath {
         return emboss;
     }
 
-    public void setEmboss(boolean emboss) {
-        this.emboss = emboss;
-    }
-
     public boolean getBlur() {
         return blur;
-    }
-
-    public void setBlur(boolean blur) {
-        this.blur = blur;
     }
 
     public int getStrokeWidth() {
         return strokeWidth;
     }
 
-    public void setStrokeWidth(int strokeWidth) {
-        this.strokeWidth = strokeWidth;
-    }
-
     public Path getPath() {
         return path;
     }
 
-    public void setPath(Path path) {
-        this.path = path;
+    public Paint.Cap getCap() {
+        return cap;
     }
 }

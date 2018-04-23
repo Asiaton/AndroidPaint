@@ -2,39 +2,95 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Normal"
-        android:id="@+id/normal"/>
+    <item android:title="Draw"
+        android:id="@+id/drawMenu"
+        android:icon="@drawable/pen"
+        app:showAsAction="always">
 
-    <item android:title="Emboss"
-        android:id="@+id/emboss"/>
+        <menu>
+            <item android:title="Normal"
+                android:id="@+id/normal"/>
 
-    <item android:title="Blur"
-        android:id="@+id/blur"/>
+            <item android:title="Emboss"
+                android:id="@+id/emboss"/>
 
-    <item android:title="Eraser"
-        android:id="@+id/eraser"/>
+            <item android:title="Blur"
+                android:id="@+id/blur"/>
+
+            <item android:title="Eraser"
+                android:id="@+id/eraser"/>
+
+            <item android:title="Square/round brush"
+                android:id="@+id/brushShape" />
+
+            <item android:title="Brush size"
+                android:id="@+id/brushSize" />
+        </menu>
+    </item>
 
     <item android:title="Color"
-        android:id="@+id/color"/>
+        android:id="@+id/colorMenu"
+        android:icon="@drawable/palette"
+        app:showAsAction="always">
 
-    <item android:title="Background color"
-        android:id="@+id/backgroundColor" />
+        <menu>
+            <item android:title="Color"
+                android:id="@+id/color"/>
 
-    <item android:title="Transparent background"
-        android:id="@+id/transparentBG" />
+            <item android:title="Background color"
+                android:id="@+id/backgroundColor" />
 
-    <item android:title="Clear"
-        android:id="@+id/clear"/>
+            <item android:title="Dropper"
+                android:id="@+id/dropper" />
+        </menu>
+    </item>
 
-    <item android:title="Undo"
-        android:id="@+id/undo" />
+    <item android:title="Shapes"
+        android:id="@+id/shapeMenu"
+        android:icon="@drawable/oval"
+        app:showAsAction="always">
 
-    <item android:title="Dropper"
-        android:id="@+id/dropper" />
+        <menu>
+            <item android:title="Line"
+                android:id="@+id/line" />
 
-    <item android:title="Save"
-        android:id="@+id/save"/>
+            <item android:title="Rectangle"
+                android:id="@+id/rectangle" />
 
-    <item android:title="Load"
-        android:id="@+id/load" />
+            <item android:title="Round rectangle"
+                android:id="@+id/roundRect" />
+
+            <item android:title="Circle"
+                android:id="@+id/circle" />
+
+            <item android:title="Oval"
+                android:id="@+id/oval" />
+        </menu>
+    </item>
+
+    <item android:title="Menu"
+        android:id="@+id/menu"
+        android:icon="@drawable/settings"
+        app:showAsAction="always">
+
+        <menu>
+            <item android:title="Undo line"
+                android:id="@+id/undoLine" />
+
+            <item android:title="Undo shape"
+                android:id="@+id/undoShape" />
+
+            <item android:title="Clear"
+                android:id="@+id/clear"/>
+
+            <item android:title="Save"
+                android:id="@+id/save"/>
+
+            <item android:title="Load"
+                android:id="@+id/load" />
+
+            <item android:title="Credits"
+                android:id="@+id/credits" />
+        </menu>
+    </item>
 </menu>
