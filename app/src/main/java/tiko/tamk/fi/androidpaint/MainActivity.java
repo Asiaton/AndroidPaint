@@ -1,17 +1,11 @@
 package tiko.tamk.fi.androidpaint;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -22,18 +16,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -64,83 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
             ActivityCompat.requestPermissions(this, listOfPermissions, 1);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.normal:
-                paintView.normal();
-                return true;
-            case R.id.emboss:
-                paintView.emboss();
-                return true;
-            case R.id.blur:
-                paintView.blur();
-                return true;
-            case R.id.eraser:
-                paintView.setCurrentColor(paintView.getBackgroundColor());
-                paintView.normal();
-                return true;
-            case R.id.color:
-                createColorPicker(0).show();
-                return true;
-            case R.id.backgroundColor:
-                createColorPicker(1).show();
-                return true;
-            case R.id.clear:
-                paintView.clear();
-                return true;
-            case R.id.undoLine:
-                paintView.undoLine();
-                return true;
-            case R.id.undoShape:
-                paintView.undoShape();
-                return true;
-            case R.id.line:
-                paintView.setDrawLine(true);
-                return true;
-            case R.id.rectangle:
-                paintView.setDrawRectangle(true);
-                return true;
-            case R.id.circle:
-                paintView.setDrawCircle(true);
-                return true;
-            case R.id.oval:
-                paintView.setDrawOval(true);
-                return true;
-            case R.id.roundRect:
-                paintView.setDrawRoundedRectangle(true);
-                return true;
-            case R.id.dropper:
-                paintView.setDropperActive(true);
-                return true;
-            case R.id.brushShape:
-                paintView.changeStrokeShape();
-                return true;
-            case R.id.brushSize:
-                createSeekDialog();
-                return true;
-            case R.id.save:
-                save(paintView);
-                return true;
-            case R.id.load:
-                paintView.clear();
-                load();
-                return true;
-            case R.id.credits:
-                openCredits();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void load() {
@@ -239,33 +150,25 @@ public class MainActivity extends AppCompatActivity {
 
         alert.setView(linear);
 
-        alert.setPositiveButton("Ok",new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog,int id)
-            {
-                String brushWidth = String.valueOf(seek.getProgress());
-                Toast.makeText(getApplicationContext(),
-                        "Brush size: " + brushWidth,
-                        Toast.LENGTH_LONG).show();
-                paintView.setStrokeWidth(seek.getProgress());
-            }
+        alert.setPositiveButton("Ok", (dialog, id) -> {
+            String brushWidth = String.valueOf(seek.getProgress());
+            Toast.makeText(getApplicationContext(),
+                    "Brush size: " + brushWidth,
+                    Toast.LENGTH_LONG).show();
+            paintView.setStrokeWidth(seek.getProgress());
         });
 
-        alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog,int id)
-            {
+        alert.setNegativeButton("Cancel", (dialog, id) -> {
                 Toast.makeText(getApplicationContext(),
-                        "Canceled",
-                        Toast.LENGTH_LONG).show();
-            }
+                "Canceled",
+                Toast.LENGTH_LONG).show();
         });
 
         alert.show();
     }
 
-    public AmbilWarnaDialog createColorPicker(final int colorTarget) {
-        AmbilWarnaDialog dialog = new AmbilWarnaDialog(this,
+    public void createColorPicker(final int colorTarget) {
+        new AmbilWarnaDialog(this,
                 paintView.getCurrentColor(),
                 true,
                 new AmbilWarnaDialog.OnAmbilWarnaListener() {
@@ -283,8 +186,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onCancel(AmbilWarnaDialog dialog) {
                         // cancel was selected by the user
                     }
-                });
-        return dialog;
+                }).show();
     }
 
     public void openCredits() {
@@ -296,13 +198,86 @@ public class MainActivity extends AppCompatActivity {
                 "\n\nAmbilWarnaDialog by yukuku was used for " +
                 "the color picker dialog.");
 
-        builder.setPositiveButton("Ok, cool!", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-            }
-        });
+        builder.setPositiveButton("Ok, cool!", (dialog, id) -> {});
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.normal:
+                paintView.normal();
+                return true;
+            case R.id.emboss:
+                paintView.emboss();
+                return true;
+            case R.id.blur:
+                paintView.blur();
+                return true;
+            case R.id.eraser:
+                paintView.setCurrentColor(paintView.getBackgroundColor());
+                paintView.normal();
+                return true;
+            case R.id.color:
+                createColorPicker(0);
+                return true;
+            case R.id.backgroundColor:
+                createColorPicker(1);
+                return true;
+            case R.id.clear:
+                paintView.clear();
+                return true;
+            case R.id.undoLine:
+                paintView.undoLine();
+                return true;
+            case R.id.undoShape:
+                paintView.undoShape();
+                return true;
+            case R.id.line:
+                paintView.setDrawLine(true);
+                return true;
+            case R.id.rectangle:
+                paintView.setDrawRectangle(true);
+                return true;
+            case R.id.circle:
+                paintView.setDrawCircle(true);
+                return true;
+            case R.id.oval:
+                paintView.setDrawOval(true);
+                return true;
+            case R.id.roundRect:
+                paintView.setDrawRoundedRectangle(true);
+                return true;
+            case R.id.dropper:
+                paintView.setDropperActive(true);
+                return true;
+            case R.id.brushShape:
+                paintView.changeStrokeShape();
+                return true;
+            case R.id.brushSize:
+                createSeekDialog();
+                return true;
+            case R.id.save:
+                save(paintView);
+                return true;
+            case R.id.load:
+                paintView.clear();
+                load();
+                return true;
+            case R.id.credits:
+                openCredits();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
