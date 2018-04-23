@@ -1,4 +1,4 @@
-package tiko.tamk.fi.androidpaint;
+package fi.tamk.tiko.androidpaint;
 
 /**
  * Class that saves the information necessary for saving drawn circles

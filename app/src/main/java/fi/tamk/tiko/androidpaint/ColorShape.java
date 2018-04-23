@@ -1,4 +1,4 @@
-package tiko.tamk.fi.androidpaint;
+package fi.tamk.tiko.androidpaint;
 
 /**
  * Super class used to pass its methods and attributes to subclasses,

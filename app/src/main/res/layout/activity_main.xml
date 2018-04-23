@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tiko.tamk.fi.androidpaint.MainActivity">
+    tools:context="fi.tamk.tiko.androidpaint.MainActivity">
 
-    <tiko.tamk.fi.androidpaint.PaintView
+    <fi.tamk.tiko.androidpaint.PaintView
         android:id="@+id/paintView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

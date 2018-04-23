@@ -1,4 +1,4 @@
-package tiko.tamk.fi.androidpaint;
+package fi.tamk.tiko.androidpaint;
 
 import android.graphics.RectF;
 

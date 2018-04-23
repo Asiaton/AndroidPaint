@@ -1,4 +1,4 @@
-package tiko.tamk.fi.androidpaint;
+package fi.tamk.tiko.androidpaint;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,7 +15,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;

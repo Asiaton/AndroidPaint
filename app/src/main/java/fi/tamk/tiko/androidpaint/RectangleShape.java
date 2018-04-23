@@ -1,4 +1,4 @@
-package tiko.tamk.fi.androidpaint;
+package fi.tamk.tiko.androidpaint;
 
 /**
  * Enum that is used for drawing ColorRect objects. ColorRect can be
