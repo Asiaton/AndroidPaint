@@ -30,11 +30,32 @@ import java.util.Calendar;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
+/**
+ * Main and only activity of the app. Contains a PaintView object on which
+ * everything in the app is drawn. Also contains methods for loading and
+ * saving images, opening different dialogs, and creating the menu bar on
+ * top of the application.
+ */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * The PaintView object that contains all the information on drawing.
+     */
     private PaintView paintView;
+
+    /**
+     * The path extension to make the app save images in the correct folder.
+     */
     public final static String APP_PATH_SD_CARD = "/Paint05/";
 
+    /**
+     * Method that is called upon creation of the activity. It initializes
+     * the PaintView object and necessary permissions to write and read
+     * to and from the external storage (SD card)
+     *
+     * @param savedInstanceState Bundle that passes any previously
+     *                           saved information to the app.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,12 +75,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Opens device gallery in new activity.
+     */
     public void load() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, 0);
     }
 
+    /**
+     * Returns the image chosen in the activity started in the load() method.
+     *
+     * @param requestCode Code used to differentiate between different requests.
+     * @param resultCode Code that tells whether the request was completed.
+     * @param data The data returned from the activity, in this case data of
+     *             the image that was loaded.
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -75,6 +107,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Saves the given image into device gallery using path defined before.
+     *
+     * @param paintView The PaintView from which saved image is created.
+     */
     public void save(PaintView paintView) {
 
         Bitmap image = Bitmap.createBitmap(paintView.getWidth(),
@@ -82,12 +119,14 @@ public class MainActivity extends AppCompatActivity {
         Canvas c = new Canvas(image);
         paintView.draw(c);
 
-
+        // The full path for saving the image
         String fullPath =
                 Environment.getExternalStoragePublicDirectory(
                         Environment.DIRECTORY_PICTURES).getAbsolutePath()
                         + APP_PATH_SD_CARD;
 
+        // Check whether the necessary directories for saving exist.
+        // If not, create them.
         try {
             File dir = new File(fullPath);
             if (!dir.exists()) {
@@ -99,8 +138,9 @@ public class MainActivity extends AppCompatActivity {
 
             fOut = new FileOutputStream(file);
 
-            // 100 means no compression, the lower you go,
-            // the stronger the compression
+            // Quality of 100 means no compression. The lower you go,
+            // the stronger the compression. 100 was chosen because the file
+            // size isn't that big even without compression.
             image.compress(Bitmap.CompressFormat.PNG, 100, fOut);
             fOut.flush();
             fOut.close();
@@ -113,6 +153,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates unique file name based on date and time. Every second has
+     * a different file name.
+     *
+     * @return The unique name created.
+     */
     public String createUniqueFileName() {
         String uniqueName = "img-";
         Calendar c = Calendar.getInstance();
@@ -127,6 +173,10 @@ public class MainActivity extends AppCompatActivity {
         return uniqueName;
     }
 
+    /**
+     * Creates AlertDialog with a SeekBar, and opens it. The dialog is
+     * used to determine brush size for drawing.
+     */
     public void createSeekDialog() {
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -157,6 +207,12 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
+    /**
+     * Creates a dialog for picking a color, and opens it.
+     *
+     * @param colorTarget Determines whether chosen color is applied to
+     *                    brush or background.
+     */
     public void createColorPicker(final int colorTarget) {
         new AmbilWarnaDialog(this,
                 paintView.getCurrentColor(),
@@ -179,6 +235,9 @@ public class MainActivity extends AppCompatActivity {
                 }).show();
     }
 
+    /**
+     * Creates a dialog containing credits, and opens it.
+     */
     public void openCredits() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -194,6 +253,12 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * Creates the menu bar from xml file main.xml
+     *
+     * @param menu Menu that is created.
+     * @return Whether the menu will be displayed or not.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -201,6 +266,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Creates the functionality for the menu items.
+     *
+     * @param item Chosen menu item
+     * @return Return false to allow normal menu processing to proceed,
+     *          true to consume it here.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
