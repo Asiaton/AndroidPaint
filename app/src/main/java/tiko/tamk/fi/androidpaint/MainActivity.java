@@ -88,25 +88,16 @@ public class MainActivity extends AppCompatActivity {
                         Environment.DIRECTORY_PICTURES).getAbsolutePath()
                         + APP_PATH_SD_CARD;
 
-        System.out.println(fullPath);
         try {
             File dir = new File(fullPath);
-            System.out.println(dir.exists());
             if (!dir.exists()) {
-                System.out.println(dir.mkdirs());
+                dir.mkdirs();
             }
 
             OutputStream fOut = null;
-            Log.d("File", "1");
             File file = new File(fullPath, createUniqueFileName() + ".png");
 
-            Log.d("File", "2");
-            System.out.println(file.getAbsolutePath());
-            System.out.println(file.createNewFile());
-
-            Log.d("File", "3");
             fOut = new FileOutputStream(file);
-            Log.d("File", file.getAbsolutePath());
 
             // 100 means no compression, the lower you go,
             // the stronger the compression
@@ -118,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
                     file.getAbsolutePath(), file.getName(), file.getName());
 
         } catch (Exception e) {
-            Log.e("saveToExternalStorage()", e.getMessage());
             e.printStackTrace();
         }
     }
